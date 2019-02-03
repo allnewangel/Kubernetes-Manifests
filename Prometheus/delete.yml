@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the prometheus manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "cr_prometheus.yml.j2"
+            - "crb_prometheus.yml.j2"
+            - "sa_prometheus.yml.j2"
+            - "dep_prometheus.yml.j2"

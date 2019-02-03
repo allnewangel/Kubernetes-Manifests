@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deploying the Personal Website manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "ns_prometheus.yml.j2"
+            - "cr_prometheus.yml.j2"
+            - "crb_prometheus.yml.j2"
+            - "sa_prometheus.yml.j2"
+            - "svc_prometheus.yml.j2"
+            - "dep_prometheus.yml.j2"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ prometheus_hostname }}"
+            port: 8080
+            timeout: 300
+            msg: "Website not available after 5 minutes. Something has probably gone wrong."

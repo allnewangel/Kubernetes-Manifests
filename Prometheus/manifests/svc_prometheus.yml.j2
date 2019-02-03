@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: prometheus-operator
+    namespace: {{ prometheus_namespace }}
+    labels:
+        app: prometheus-operator
+spec:
+    type: LoadBalancer
+    selector:
+        app: prometheus-operator
+    loadBalancerIP: {{ load_balancer_ip }}
+    ports:
+    - protocol: TCP
+      targetPort: 9090
+      port: 9090

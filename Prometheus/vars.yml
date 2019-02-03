@@ -1,0 +1,8 @@
+# Namespace to deploy the manifests to.
+prometheus_namespace: 'prometheus-operator'
+
+# IP Address on which you want to to load balance the website.
+load_balancer_ip: '192.168.0.102'
+
+# The hostname with which you want to connect to the service on the load balancer.
+prometheus_hostname: 'prometheus.sol.milkyway'
